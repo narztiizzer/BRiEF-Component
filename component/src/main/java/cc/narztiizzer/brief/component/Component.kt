@@ -1,26 +1,14 @@
 package cc.narztiizzer.brief.component
 
-import android.os.Bundle
+import android.arch.lifecycle.ViewModel
 import android.support.v4.app.Fragment
-import android.view.View
+import java.lang.reflect.ParameterizedType
 
-abstract class Component<T: ComponentRepository>: Fragment() {
+open class Component<T: ViewModel>: Fragment() {
+   private var vmComponent: T? = null
 
-   private lateinit var repository: T
+   @Suppress("UNCHECKED_CAST")
+   private var viewModelClass: Class<T> = (this::class.java.genericSuperclass as ParameterizedType).actualTypeArguments[0] as Class<T>
 
-   override fun onCreate(savedInstanceState: Bundle?) {
-      super.onCreate(savedInstanceState)
-      this.repository = this.registerComponentRepository()
-      this.repository.prepare(context!!)
-      this.repository.putBundle(arguments)
-   }
-
-   abstract fun registerComponentRepository(): T
-
-   abstract fun onViewCreated(view: View, savedInstanceState: Bundle?, repository: T)
-
-   override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-      super.onViewCreated(view, savedInstanceState)
-      this.onViewCreated(view, savedInstanceState, this.repository)
-   }
+   protected fun getComponentViewModel() = this.vmComponent
 }
