@@ -1,35 +1,41 @@
 package cc.narztiizzer.brief.component.sample
 
-import android.os.Bundle
+import android.app.DatePickerDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import cc.narztiizzer.brief.component.Component
-import android.app.DatePickerDialog
 import java.util.*
 
+class SampleComponent : Component<SampleComponentData>() {
 
-class SampleComponent: Component<SampleComponentViewModel>() {
-    private var button: Button? = null
-
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.sample_component, container, false)
+    override fun setComponentTypeId(): Int {
+        var tempId = 0
+        this::class.java.name.toCharArray().forEach { tempId += it.toInt() }
+        return tempId
     }
 
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-        this.button = view.findViewById(R.id.button)
-        this.button?.setOnClickListener { datePicker().show() }
+    override fun onCreateComponentView(context: Context, viewGroup: ViewGroup): View? {
+        return LayoutInflater.from(context).inflate(R.layout.sample_component, viewGroup, false)
+    }
+
+    override fun onComponentViewCreated(view: View) {
+        val button = findViewById<Button>(R.id.button)
+        button.setOnClickListener {
+            datePicker().show()
+        }
     }
 
     private fun datePicker(): DatePickerDialog {
-        val startDate = Calendar.getInstance()
-        return DatePickerDialog(context!!,
-            DatePickerDialog.OnDateSetListener { _, year, month, dayOfMonth ->
-                val selectDate = Calendar.getInstance()
-                selectDate.set(year, month, dayOfMonth, 0, 0, 0)
-                getComponentViewModel()?.updateTimestamp(selectDate.time.time)
-            }, startDate.get(Calendar.YEAR), startDate.get(Calendar.MONTH), startDate.get(Calendar.DAY_OF_MONTH))
+        val current = Calendar.getInstance()
+        return DatePickerDialog(context!!, DatePickerDialog.OnDateSetListener { view, year, month, dayOfMonth ->
+            val selected = Calendar.getInstance()
+            selected.set(year, month, dayOfMonth, 0, 0, 0)
+            this.data?.timestamp = selected.time.time
+            getComponentDataNotify()?.notify(data!!)
+        }, current.get(Calendar.YEAR), current.get(Calendar.MONTH), current.get(Calendar.DAY_OF_MONTH))
     }
+
 }

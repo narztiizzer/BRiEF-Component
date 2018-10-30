@@ -16,6 +16,16 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content" android:id="@+id/result" android:layout_margin="16dp"
             android:textColor="#000" android:layout_gravity="center_horizontal"/>
+    <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:ems="10"
+            android:id="@+id/message" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
+    <cc.narztiizzer.brief.component.ComponentContainer
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" android:id="@+id/component_list"/>
     <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/container" android:layout_weight="1"

@@ -1,34 +1,36 @@
 package cc.narztiizzer.brief.component.sample
 
 import android.annotation.SuppressLint
-import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.EditText
 import android.widget.TextView
+import cc.narztiizzer.brief.component.interfaces.OnNotifyComponentData
 import java.text.SimpleDateFormat
 import java.util.*
+import cc.narztiizzer.brief.component.*
+
 
 class MainActivity : AppCompatActivity() {
-    private lateinit var activityViewModel: ActivityViewModel
 
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val fmtOut = SimpleDateFormat("dd-MM-yyyy")
+        val fmtOut = SimpleDateFormat("dd MMM yyyy")
         val result = findViewById<TextView>(R.id.result)
+        val inputMessage = findViewById<EditText>(R.id.message)
 
-        this.activityViewModel = ViewModelProviders.of(this).get(ActivityViewModel::class.java)
-        this.activityViewModel.changeCreateTimeEvent.observe(this, Observer {
-            val dateString = it?.let { fmtOut.format(Date(it)) }
-            result.text = dateString
-        })
-
-        val transaction = supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.container, SampleComponent())
-        transaction.commit()
+        val componentList = findViewById<ComponentContainer>(R.id.component_list)
+        val component = SampleComponent()
+            component.registerComponentDataNotify(object : OnNotifyComponentData<SampleComponentData>{
+                override fun notify(component: SampleComponentData) {
+                    result.text = fmtOut.format(Date(component.timestamp))
+                }
+            })
+        componentList.registerComponent(component)
+        componentList.create()
 
         println()
     }
