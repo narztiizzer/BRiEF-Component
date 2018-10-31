@@ -48,8 +48,9 @@ abstract class Component<T: ComponentData> {
 
     protected fun <T: View> findViewById(resId: Int): T = this.view?.itemView!!.findViewById(resId)
 
-    fun registerComponentDataNotify(component: OnNotifyComponentData<T>) {
+    fun registerComponentDataNotify(component: OnNotifyComponentData<T>): Component<T> {
         this.notifyListener = component
+        return this
     }
 
     fun removeComponentDataNotify(){

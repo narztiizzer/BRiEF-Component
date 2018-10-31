@@ -22,16 +22,14 @@ class MainActivity : AppCompatActivity() {
         val result = findViewById<TextView>(R.id.result)
         val inputMessage = findViewById<EditText>(R.id.message)
 
-        val componentList = findViewById<ComponentContainer>(R.id.component_list)
-        val component = SampleComponent()
-            component.registerComponentDataNotify(object : OnNotifyComponentData<SampleComponentData>{
-                override fun notify(component: SampleComponentData) {
-                    result.text = fmtOut.format(Date(component.timestamp))
+        val componentList = findViewById<ComponentView>(R.id.component_list)
+        val component = SampleComponent().
+            registerComponentDataNotify(object : OnNotifyComponentData<SampleComponentData>{
+                override fun notify(data: SampleComponentData) {
+                    result.text = fmtOut.format(Date(data.timestamp))
                 }
             })
         componentList.registerComponent(component)
         componentList.create()
-
-        println()
     }
 }

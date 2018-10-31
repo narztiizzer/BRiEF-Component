@@ -23,7 +23,7 @@
             android:text="Name"
             android:ems="10"
             android:id="@+id/message" android:layout_marginLeft="16dp" android:layout_marginRight="16dp"/>
-    <cc.narztiizzer.brief.component.ComponentContainer
+    <cc.narztiizzer.brief.component.ComponentView
             android:layout_width="match_parent"
             android:layout_height="match_parent" android:id="@+id/component_list"/>
     <LinearLayout

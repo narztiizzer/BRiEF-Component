@@ -5,7 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.util.AttributeSet
 
-class ComponentContainer: RecyclerView {
+class ComponentView: RecyclerView {
 
     private val componentAdapter = ComponentAdapter()
 
